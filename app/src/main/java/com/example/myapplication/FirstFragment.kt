@@ -7,11 +7,16 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import androidx.navigation.fragment.findNavController
+import io.aikosoft.alaket.util.EventObserver
+import kotlinx.android.synthetic.main.fragment_first.*
+import org.koin.android.viewmodel.ext.android.sharedViewModel
 
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
  */
 class FirstFragment : Fragment() {
+
+    val mainViewModel: MainViewModel by sharedViewModel()
 
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
@@ -27,5 +32,18 @@ class FirstFragment : Fragment() {
         view.findViewById<Button>(R.id.button_first).setOnClickListener {
             findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment)
         }
+
+        with(mainViewModel){
+            showLoadingEvent.observe(viewLifecycleOwner, EventObserver{
+                progressBar.visibility =it.toVisibility()
+            })
+            showErrorEvent  .observe(viewLifecycleOwner, EventObserver{
+                textview_first.text = it.toString()
+            })
+            displayNewsEvent.observe(viewLifecycleOwner, EventObserver{
+                textview_first.text = it.toString()
+            })
+        }
     }
+    fun Boolean?.toVisibility(): Int = if (this == true) View.VISIBLE else View.GONE
 }
