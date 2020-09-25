@@ -1,0 +1,55 @@
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+buildscript {
+    ext.kotlin_version = "1.4.0"
+    repositories {
+        google()
+        jcenter()
+    }
+    dependencies {
+        classpath "com.android.tools.build:gradle:4.0.1"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath "android.arch.navigation:navigation-safe-args-gradle-plugin:1.0.0"
+        // NOTE: Do not place your application dependencies here; they belong
+        // in the individual module build.gradle files
+    }
+    ext {
+        lifecyleVersion = '2.1.0'
+        mapServicesVersion = '0.10.1'
+        mapsUtilityVersion = '0.5'
+        materialVersion = '1.0.0'
+        okHttpVersion = '3.12.1'
+        playServicesVersion = '17.0.0'
+        retrofitVersion = '2.8.1'
+
+        // App dependencies
+        androidXVersion = '1.0.0'
+        androidXTestCoreVersion = '1.2.0'
+        androidXTestExtKotlinRunnerVersion = '1.1.1'
+        androidXTestRulesVersion = '1.2.0'
+        androidXAnnotations = '1.1.0'
+        androidXLegacySupport = '1.0.0'
+        appCompatVersion = '1.1.0'
+        archLifecycleVersion = '2.2.0-rc02'
+        archTestingVersion = '2.1.0'
+        cardVersion = '1.0.0'
+        coroutinesVersion = '1.2.1'
+        espressoVersion = '3.2.0'
+        fragmentVersion = '1.2.0-rc02'
+        fragmentKtxVersion = '1.1.0-rc01'
+
+        timberVersion = '4.7.1'
+        truthVersion = '1.0'
+    }
+
+}
+
+allprojects {
+    repositories {
+        google()
+        jcenter()
+    }
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}
