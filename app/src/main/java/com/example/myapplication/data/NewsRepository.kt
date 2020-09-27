@@ -5,4 +5,5 @@ import com.example.myapplication.data.model.Result
 
 interface NewsRepository {
     suspend fun getNews():Result<News>
+    suspend fun getNews(page: Int): Result<News>
 }

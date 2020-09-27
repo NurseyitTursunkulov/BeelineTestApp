@@ -21,22 +21,14 @@ class MainViewModel(
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
                 getNewsUseCase.getNews()
-//                Timber.d("News  =  ${factServiceApi.getNews("us","ffb0a70e60274c8d955b64776e69e100")}")
-//                val res = factServiceApi.getNews( "us","ffb0a70e60274c8d955b64776e69e100")
-//                 when (res) {
-//                    is NetworkResponse.Success -> {
-//                        Log.d("Nurs","News  = $res")
-//                    }
-//                    is NetworkResponse.ApiError -> {
-//                        Timber.d("News  = ${res.body.message.toString()}")
-//                    }
-//                    is NetworkResponse.NetworkError -> {
-//                        Timber.d("News  = NetworkError $res")
-//                    }
-//                    is NetworkResponse.UnknownError -> {
-//                        Timber.d("News  = UnknownError $res")
-//                    }
-//                }
+            }
+        }
+    }
+
+    fun getNextPage(page:Int){
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                getNewsUseCase.getNextPage(page)
             }
         }
     }
