@@ -31,6 +31,7 @@ class NewsAdapter : ListAdapter<Article, NewsAdapter.NewsItemViewHolder>(diffCal
     class NewsItemViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         fun bindNewsItem(article : Article) {
             itemView.title.text = article.articleId.toString() +"   "+  article.title
+            itemView.detail_text_view.text = article.description
             Glide.with(itemView).load(article.urlToImage).
             diskCacheStrategy(DiskCacheStrategy.DATA).
             centerCrop().into( itemView.imageView);
