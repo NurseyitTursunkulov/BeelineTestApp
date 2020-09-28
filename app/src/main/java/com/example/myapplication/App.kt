@@ -95,25 +95,5 @@ class App : Application() {
             GsonBuilder().setLenient().create()
         }
         single { get<Retrofit>().create(FactServiceApi::class.java) }
-//
-//        single<FactsRepositoryUtil> {
-//            FactsRepositoryUtilImpl(
-//                factServiceApi = get(),
-//                factsDao = get()
-//            )
-//        }
-//
-//        single<FactsRepository> {
-//            FactRepositoryImpl(
-//                factServiceApi = get(),
-//                factsDao = get(),
-//                factsRepositoryUtil = get()
-//            )
-//        }
-//
-//        single<GetFactsUseCase> { GetFactsUseCaseImpl(factRepository = get()) }
-//        viewModel { FactsViewModel(getFactsUseCase = get()) }
-//
-//        single<FactsDao> { FactsDataBase.getInstance(androidApplication()).factsDao() }
     }
 }

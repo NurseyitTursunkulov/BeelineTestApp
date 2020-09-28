@@ -12,6 +12,7 @@ class GetNewsUseCase(
     private val repository: NewsRepository,
     private val presenter: NewsPresenter
 ) {
+
     suspend fun getNews(shouldUpdate: Boolean = false) {
         presenter.showLoading(true)
         val result = repository.getNews(shouldUpdate)
@@ -43,21 +44,12 @@ class GetNewsUseCase(
         presenter.showLoading(false)
     }
 
-    suspend fun observeDB() {
-        repository.observeDB().collect { list ->
-            list.let {
-                if (it != null) {
-//                    presenter.displayNews(it)
-                }
-            }
-
-        }
-    }
+    private val UPDATE_INTERVAL = 70
 
     suspend fun shouldUpdate(): Boolean {
         repository.getLastEnteredTime()?.let {
             Timber.d("${((Date().time - it)/1000)}")
-            return (Date().time - it)/1000 > 70
+            return (Date().time - it)/1000 > UPDATE_INTERVAL
         }?:
         return false
     }

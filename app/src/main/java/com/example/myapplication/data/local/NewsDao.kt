@@ -12,15 +12,6 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface NewsDao {
-//    @Insert
-//    suspend fun saveNews(news: News)
-//
-//    @ExperimentalCoroutinesApi
-//    @Query("SELECT * FROM News")
-//    fun observeNews(): Flow<News>
-//
-//    @Query("SELECT * FROM News")
-//    suspend fun getNews():News?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun saveArticles(vararg article: Article)

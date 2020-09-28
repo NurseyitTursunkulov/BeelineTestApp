@@ -8,7 +8,6 @@ import kotlinx.coroutines.flow.Flow
 interface NewsRepository {
     suspend fun getNews(shouldUpdate:Boolean):Result<List<Article>>
     suspend fun getNews(page: Int): Result<List<Article>>
-    fun observeDB(): Flow<List<Article>?>
     suspend fun getLastEnteredTime():Long?
     suspend fun saveLastEnteredTime(time: Long)
 }

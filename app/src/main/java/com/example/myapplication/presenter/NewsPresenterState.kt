@@ -7,6 +7,8 @@ import java.lang.Exception
 
 interface NewsPresenterState {
 
+    //    todo instead of liveData here supposed to be Kotlin Flow, but there were some bug
+    //     with it, so we postponed it until improvement
     val showLoadingEvent: LiveData<Event<Boolean>>
     val displayNewsEvent: LiveData<Event<MutableList<Article>>>
     val showErrorEvent: LiveData<Event<Exception>>

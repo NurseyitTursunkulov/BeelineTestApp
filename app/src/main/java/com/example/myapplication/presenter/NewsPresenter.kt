@@ -5,9 +5,7 @@ import java.lang.Exception
 
 interface NewsPresenter {
     suspend fun showLoading(state: Boolean)
-
     suspend fun displayNews(list: List<Article>)
-
     suspend fun showError(list: Exception)
     suspend fun clearOldNews()
 }

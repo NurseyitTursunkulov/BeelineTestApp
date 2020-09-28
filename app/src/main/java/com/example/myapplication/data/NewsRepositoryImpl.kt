@@ -12,15 +12,11 @@ import timber.log.Timber
 import java.util.*
 
 class NewsRepositoryImpl(
-    private val api: FactServiceApi
-    ,
+    private val api: FactServiceApi,
     private val dao: NewsDao
 ) : NewsRepository {
 
     override suspend fun getNews(shouldUpdate:Boolean): Result<List<Article>> {
-//        dao.getNews()?.let {
-//            return Result.Success(it)
-//        }
         if (shouldUpdate){
             dao.deleteAll()
         }
@@ -32,7 +28,7 @@ class NewsRepositoryImpl(
                 }
             }
         }
-        val res = api.getNews(q = "bitcoin", key = "ffb0a70e60274c8d955b64776e69e100",pageSize = 10,page = 1)
+        val res = api.getNews(q = "Россия", key = "ffb0a70e60274c8d955b64776e69e100",pageSize = 10,page = 1)
         return when (res) {
             is NetworkResponse.Success -> {
                 res.body.articles.mapIndexed { index, article ->
@@ -68,10 +64,9 @@ class NewsRepositoryImpl(
                 return Result.Success(it)
             }
         }
-        val res = api.getNews(q = "bitcoin", key = "ffb0a70e60274c8d955b64776e69e100",pageSize = 10,page = page)
+        val res = api.getNews(q = "Россия", key = "ffb0a70e60274c8d955b64776e69e100",pageSize = 10,page = page)
         return when (res) {
             is NetworkResponse.Success -> {
-//                dao.saveNews(res.body)
                 val art:MutableList<Article> = mutableListOf()
                  res.body.articles.mapIndexedTo(art, { index, article ->
                      article.apply {
@@ -94,10 +89,6 @@ class NewsRepositoryImpl(
                 Result.Error(Exception("UnknownError"))
             }
         }
-    }
-
-    override fun observeDB(): Flow<List<Article>?> {
-        return dao.observeArticles()
     }
 
     override suspend fun getLastEnteredTime(): Long? {
