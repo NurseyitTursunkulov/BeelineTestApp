@@ -14,8 +14,8 @@ class NewsPresenterImpl :NewsPresenter ,NewsPresenterState{
         _showLoadingEvent.postValue(Event(state))
     }
 
-    private val _displayNewsEvent = MutableLiveData<Event<List<Article>>>()
-    override val displayNewsEvent: LiveData<Event<List<Article>>> = _displayNewsEvent
+    private val _displayNewsEvent = MutableLiveData<Event<MutableList<Article>>>()
+    override val displayNewsEvent: LiveData<Event<MutableList<Article>>> = _displayNewsEvent
     override suspend fun displayNews(list: List<Article>) {
         val df = mutableListOf<Article>()
         displayNewsEvent.value?.peekContent()?.let {
@@ -31,4 +31,7 @@ class NewsPresenterImpl :NewsPresenter ,NewsPresenterState{
         _showErrorEvent.postValue(Event(list))
     }
 
+    override suspend fun clearOldNews() {
+        _displayNewsEvent.value?.peekContent()?.clear()
+    }
 }

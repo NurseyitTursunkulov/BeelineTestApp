@@ -1,9 +1,12 @@
 package com.example.myapplication
 
 import android.app.Application
+import androidx.room.Dao
 import com.example.myapplication.data.FactServiceApi
 import com.example.myapplication.data.NewsRepository
 import com.example.myapplication.data.NewsRepositoryImpl
+import com.example.myapplication.data.local.NewsDao
+import com.example.myapplication.data.local.RoomDataBase
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import com.example.myapplication.data.networkUtil.NetworkResponseAdapterFactory
 import com.example.myapplication.domain.GetNewsUseCase
@@ -16,17 +19,20 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
+import org.koin.android.viewmodel.compat.ScopeCompat.getViewModel
 import org.koin.android.viewmodel.dsl.viewModel
 import org.koin.core.context.startKoin
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.converter.scalars.ScalarsConverterFactory
+import timber.log.Timber
 import java.util.concurrent.TimeUnit
 
 class App : Application() {
     override fun onCreate() {
         super.onCreate()
+        Timber.plant(Timber.DebugTree())
         startKoin {
             androidLogger()
             androidContext(this@App)
@@ -59,9 +65,11 @@ class App : Application() {
         }
         single<NewsRepository> {
             NewsRepositoryImpl(
-                api= get()
+                api= get(),
+                dao = get()
             )
         }
+        single<NewsDao> { RoomDataBase.getInstance(androidContext()).factsDao() }
         single<OkHttpClient> {
             OkHttpClient.Builder()
                 .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))

@@ -28,7 +28,7 @@ class NewsAdapter : ListAdapter<Article, NewsAdapter.NewsItemViewHolder>(diffCal
 
     class NewsItemViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         fun bindNewsItem(article : Article) {
-            itemView.textView.text = article.description
+            itemView.textView.text = article.articleId.toString() +"   "+  article.title
         }
     }
 

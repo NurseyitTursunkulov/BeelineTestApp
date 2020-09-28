@@ -1,4 +1,4 @@
-package com.example.myapplication
+package com.example.myapplication.presenter.android
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -8,9 +8,9 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.myapplication.MainViewModel
+import com.example.myapplication.R
 import com.example.myapplication.app.EndlessRecyclerViewScrollListener
-import com.example.myapplication.app.PaginationListener
-import com.example.myapplication.presenter.android.NewsAdapter
 import io.aikosoft.alaket.util.EventObserver
 import kotlinx.android.synthetic.main.fragment_first.*
 import org.koin.android.viewmodel.ext.android.sharedViewModel

@@ -9,4 +9,5 @@ interface NewsPresenter {
     suspend fun displayNews(list: List<Article>)
 
     suspend fun showError(list: Exception)
+    suspend fun clearOldNews()
 }

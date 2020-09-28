@@ -8,6 +8,6 @@ import java.lang.Exception
 interface NewsPresenterState {
 
     val showLoadingEvent: LiveData<Event<Boolean>>
-    val displayNewsEvent: LiveData<Event<List<Article>>>
+    val displayNewsEvent: LiveData<Event<MutableList<Article>>>
     val showErrorEvent: LiveData<Event<Exception>>
 }
