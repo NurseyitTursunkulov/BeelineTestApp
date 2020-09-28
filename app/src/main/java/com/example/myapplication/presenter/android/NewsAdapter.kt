@@ -9,14 +9,15 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.example.data.model.Article
+import com.example.myapplication.MainViewModel
 import com.example.myapplication.R
 import kotlinx.android.synthetic.main.news_item.view.*
 
-class NewsAdapter : ListAdapter<Article, NewsAdapter.NewsItemViewHolder>(diffCallback){
+class NewsAdapter(val viewModel: MainViewModel) : ListAdapter<Article, NewsAdapter.NewsItemViewHolder>(diffCallback){
     private lateinit var inflater: LayoutInflater
     override fun onBindViewHolder(holder: NewsItemViewHolder, position: Int) {
         val item = getItem(position)
-        holder.bindNewsItem( item)
+        holder.bindNewsItem( item,viewModel)
     }
 
 
@@ -29,12 +30,16 @@ class NewsAdapter : ListAdapter<Article, NewsAdapter.NewsItemViewHolder>(diffCal
     }
 
     class NewsItemViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        fun bindNewsItem(article : Article) {
+        fun bindNewsItem(article : Article,viewModel: MainViewModel) {
             itemView.title.text = article.articleId.toString() +"   "+  article.title
             itemView.detail_text_view.text = article.description
             Glide.with(itemView).load(article.urlToImage).
             diskCacheStrategy(DiskCacheStrategy.DATA).
             centerCrop().into( itemView.imageView);
+
+            itemView.setOnClickListener {
+                viewModel.showNewsDetail(article)
+            }
         }
     }
 

@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -25,7 +26,7 @@ class FirstFragment : Fragment(R.layout.fragment_first) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        listAdapter = NewsAdapter()
+        listAdapter = NewsAdapter(mainViewModel)
         initRecyclerView()
         refresh_layout.setOnRefreshListener {
             mainViewModel.getNews(shouldUpdate = true)
@@ -47,6 +48,9 @@ class FirstFragment : Fragment(R.layout.fragment_first) {
                 displayNewsEvent.value?.peekContent()?.let {
                     listAdapter.submitList(it)
                 }
+                navigateToDetailEvent.observe(viewLifecycleOwner, EventObserver{
+                    findNavController().navigate(FirstFragmentDirections.actionFirstFragmentToSecondFragment())
+                })
             }
 
     }
