@@ -41,7 +41,7 @@ class NewsAdapter : ListAdapter<Article, NewsAdapter.NewsItemViewHolder>(diffCal
 
         private val diffCallback = object : DiffUtil.ItemCallback<Article>() {
             override fun areItemsTheSame(oldItem: Article, newItem: Article): Boolean =
-                oldItem.url == newItem.url
+                oldItem.articleId == newItem.articleId
 
             override fun areContentsTheSame(
                 oldItem: Article,

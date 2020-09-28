@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -16,9 +17,6 @@ import io.aikosoft.alaket.util.EventObserver
 import kotlinx.android.synthetic.main.fragment_first.*
 import org.koin.android.viewmodel.ext.android.sharedViewModel
 
-/**
- * A simple [Fragment] subclass as the default destination in the navigation.
- */
 class FirstFragment : Fragment(R.layout.fragment_first) {
 
     val mainViewModel: MainViewModel by sharedViewModel()
@@ -29,17 +27,26 @@ class FirstFragment : Fragment(R.layout.fragment_first) {
         super.onViewCreated(view, savedInstanceState)
         listAdapter = NewsAdapter()
         initRecyclerView()
+        refresh_layout.setOnRefreshListener {
+            mainViewModel.getNews(shouldUpdate = true)
+        }
 
             with(mainViewModel){
                 showLoadingEvent.observe(viewLifecycleOwner, EventObserver{
-                    progressBar.visibility =it.toVisibility()
+                    refresh_layout.isRefreshing = it
                 })
                 showErrorEvent.observe(viewLifecycleOwner, EventObserver{
                     Snackbar.make(progressBar, it.toString(), Snackbar.LENGTH_SHORT).show()
                 })
                 displayNewsEvent.observe(viewLifecycleOwner, EventObserver{
+                    listAdapter.notifyDataSetChanged()/***known bug of rec view : https://stackoverflow.com/questions/35653439/recycler-view-inconsistency-detected-invalid-view-holder-adapter-positionviewh*/
                     listAdapter.submitList(it)
                 })
+
+                /*** this is for screen rotation*/
+                displayNewsEvent.value?.peekContent()?.let {
+                    listAdapter.submitList(it)
+                }
             }
 
     }
