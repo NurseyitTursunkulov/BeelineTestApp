@@ -52,12 +52,6 @@ class NewsRepositoryImpl(
     }
 
     override suspend fun getNews(page:Int): Result<List<Article>> {
-        dao.getArticles2()?.let {
-            it.forEach {
-                Timber.d("from net ${it.articleId}")
-            }
-
-        }
         dao.getArticles(page*10-9)?.let {
             Timber.d("from dao ${it.size}")
             if (it.isNotEmpty()) {

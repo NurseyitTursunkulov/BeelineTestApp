@@ -22,12 +22,6 @@ interface NewsDao {
     @Query("SELECT * FROM Article where articleId between :page and :page+10")
     suspend fun getArticles(page:Int):List<Article>?
 
-    @Query("SELECT * FROM Article")
-    suspend fun getArticles2():List<Article>?
-
-    @Query("SELECT * FROM Article")
-     fun observeArticles():Flow<List<Article>?>
-
     @Query("SELECT * FROM LastEnteredTime")
     suspend fun getLastEnteredTime():LastEnteredTime?
 
