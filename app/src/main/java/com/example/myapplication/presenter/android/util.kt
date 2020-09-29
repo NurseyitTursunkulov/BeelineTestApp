@@ -1,14 +1,13 @@
 package com.example.myapplication.presenter.android
 
 import android.view.View
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.app.EndlessRecyclerViewScrollListener
 import kotlinx.android.synthetic.main.fragment_first.*
 
 
-fun FirstFragment.initRecyclerView() {
+fun NewsFragment.initRecyclerView() {
     news_list.apply {
         adapter = listAdapter
         val llm = LinearLayoutManager(requireContext())

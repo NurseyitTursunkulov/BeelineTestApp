@@ -18,7 +18,7 @@ import io.aikosoft.alaket.util.EventObserver
 import kotlinx.android.synthetic.main.fragment_first.*
 import org.koin.android.viewmodel.ext.android.sharedViewModel
 
-class FirstFragment : Fragment(R.layout.fragment_first) {
+class NewsFragment : Fragment(R.layout.fragment_first) {
 
     val mainViewModel: MainViewModel by sharedViewModel()
     lateinit var listAdapter: NewsAdapter
