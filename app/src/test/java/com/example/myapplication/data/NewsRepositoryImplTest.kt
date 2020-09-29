@@ -82,6 +82,21 @@ class NewsRepositoryImplTest {
     }
 
     @Test
+    fun `if shouldUpdate data must come from api`()= runBlockingTest{
+        val data = repository.getNews(true)
+        io.mockk.coVerifySequence {
+            dao.deleteAll()
+            api.getNews(any(),any(),any(),any())
+            dao.saveArticles(*newsList.toTypedArray())
+            dao.saveLastEnteredTime(any())
+        }
+        coVerify(exactly = 0){
+            dao.getArticles(0)
+        }
+        assertEquals(Result.Success(newsList), data)
+    }
+
+    @Test
     fun testGetNews() {
     }
 
