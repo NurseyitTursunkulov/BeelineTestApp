@@ -13,11 +13,14 @@ import io.mockk.coVerify
 import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runBlockingTest
+import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
 
 import org.junit.Assert.*
 import org.junit.Rule
+import org.mockito.ArgumentMatchers.any
+import java.io.IOException
 import java.util.*
 
 class NewsRepositoryImplTest {
@@ -142,11 +145,16 @@ class NewsRepositoryImplTest {
     }
 
     @Test
-    fun getLastEnteredTime() {
-    }
+    fun `if GetNewsApi fails it must return Result Error`() = runBlockingTest{
+        coEvery {
+            dao.getArticles(any())
+        } returns emptyList()
+        coEvery {
+            api.getNews(any(),any(),any(),any())
+        } returns NetworkResponse.NetworkError(IOException())
 
-    @Test
-    fun saveLastEnteredTime() {
+        val data = repository.getNews(1)
+        Assert.assertTrue(data is Result.Error)
     }
 
     fun setup() {
