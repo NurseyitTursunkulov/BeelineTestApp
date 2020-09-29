@@ -49,7 +49,7 @@ class NewsFragment : Fragment(R.layout.fragment_first) {
                     listAdapter.submitList(it)
                 }
                 navigateToDetailEvent.observe(viewLifecycleOwner, EventObserver{
-                    findNavController().navigate(FirstFragmentDirections.actionFirstFragmentToSecondFragment())
+                    findNavController().navigate(NewsFragmentDirections.actionFirstFragmentToSecondFragment())
                 })
             }
 

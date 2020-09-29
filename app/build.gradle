@@ -106,4 +106,7 @@ dependencies {
     implementation "androidx.annotation:annotation:$androidXAnnotations"
     implementation "androidx.legacy:legacy-support-v4:$androidXLegacySupport"
 
+    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:1.3.9"
+    testImplementation "androidx.arch.core:core-testing:2.1.0"
+
 }
