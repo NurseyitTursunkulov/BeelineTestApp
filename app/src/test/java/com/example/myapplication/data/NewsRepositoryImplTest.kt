@@ -54,14 +54,31 @@ class NewsRepositoryImplTest {
 
     @Test
     fun `if shouldUpdate false and db has data, data must come from db`() = runBlockingTest {
-        val h = repository.getNews(false)
+        val data = repository.getNews(false)
         io.mockk.coVerifySequence {
             dao.getArticles(0)
         }
         coVerify(exactly = 0){
             api.getNews(any(),any(),any(),any())
         }
-        assertEquals(Result.Success(newsList), h)
+        assertEquals(Result.Success(newsList), data)
+    }
+    @Test
+    fun `if shouldUpdate false and db has no data, data must come from api`() = runBlockingTest {
+        coEvery {
+            dao.getArticles(0)
+        } returns emptyList()
+        val data = repository.getNews(false)
+        io.mockk.coVerifySequence {
+            dao.getArticles(0)
+            api.getNews(any(),any(),any(),any())
+            dao.saveArticles(*newsList.toTypedArray())
+            dao.saveLastEnteredTime(any())
+        }
+        coVerify(exactly = 0){
+            dao.deleteAll()
+        }
+        assertEquals(Result.Success(newsList), data)
     }
 
     @Test
@@ -100,7 +117,7 @@ class NewsRepositoryImplTest {
         } returns LastEnteredTime(Date().time)
 
         coEvery {
-            dao.saveLastEnteredTime(LastEnteredTime(Date().time))
+            dao.saveLastEnteredTime(any())
         } returns Unit
 
     }
