@@ -15,6 +15,8 @@ import org.junit.Assert.*
  */
 @RunWith(AndroidJUnit4::class)
 class ExampleInstrumentedTest {
+//    todo MethodHandle.invoke and MethodHandle.invokeExact are only supported starting with Android O (--min-api 26)
+//    is thrown, this is why I could not add UI tests
     @Test
     fun useAppContext() {
         // Context of the app under test.
