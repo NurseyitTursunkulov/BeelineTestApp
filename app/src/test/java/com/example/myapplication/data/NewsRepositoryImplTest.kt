@@ -25,7 +25,7 @@ class NewsRepositoryImplTest {
     lateinit var api: FactServiceApi
     lateinit var dao: NewsDao
 
-    val newsList = listOf(
+    private val newsListFromDB = listOf(
         Article(
             source = Source("", ""),
             author = "adf",
@@ -38,7 +38,21 @@ class NewsRepositoryImplTest {
             articleId = 1
         )
     )
-    val news = News(status = "200", totalResults = 1, articles = newsList, id = 1)
+
+    private val newsListFromApi = listOf(
+        Article(
+            source = Source("adf", ""),
+            author = "api",
+            title = "api",
+            description = "api",
+            url = "api",
+            urlToImage = "api",
+            publishedAt = "api",
+            content = "api",
+            articleId = 1
+        )
+    )
+    val news = News(status = "200", totalResults = 1, articles = newsListFromApi, id = 1)
 
     @ExperimentalCoroutinesApi
     @get:Rule
@@ -61,7 +75,7 @@ class NewsRepositoryImplTest {
         coVerify(exactly = 0){
             api.getNews(any(),any(),any(),any())
         }
-        assertEquals(Result.Success(newsList), data)
+        assertEquals(Result.Success(newsListFromDB), data)
     }
     @Test
     fun `if shouldUpdate false and db has no data, data must come from api`() = runBlockingTest {
@@ -72,13 +86,13 @@ class NewsRepositoryImplTest {
         io.mockk.coVerifySequence {
             dao.getArticles(0)
             api.getNews(any(),any(),any(),any())
-            dao.saveArticles(*newsList.toTypedArray())
+            dao.saveArticles(*newsListFromDB.toTypedArray())
             dao.saveLastEnteredTime(any())
         }
         coVerify(exactly = 0){
             dao.deleteAll()
         }
-        assertEquals(Result.Success(newsList), data)
+        assertEquals(Result.Success(newsListFromDB), data)
     }
 
     @Test
@@ -87,17 +101,44 @@ class NewsRepositoryImplTest {
         io.mockk.coVerifySequence {
             dao.deleteAll()
             api.getNews(any(),any(),any(),any())
-            dao.saveArticles(*newsList.toTypedArray())
+            dao.saveArticles(*newsListFromDB.toTypedArray())
             dao.saveLastEnteredTime(any())
         }
         coVerify(exactly = 0){
             dao.getArticles(0)
         }
-        assertEquals(Result.Success(newsList), data)
+        assertEquals(Result.Success(newsListFromDB), data)
     }
 
     @Test
-    fun testGetNews() {
+    fun `testGetNews db has data`() = runBlockingTest{
+        val data = repository.getNews(1)
+        io.mockk.coVerifySequence {
+            dao.getArticles(1)
+        }
+        coVerify(exactly = 0){
+            dao.deleteAll()
+            api.getNews(any(),any(),any(),any())
+            dao.saveArticles(*newsListFromDB.toTypedArray())
+            dao.saveLastEnteredTime(any())
+        }
+        assertEquals(Result.Success(newsListFromDB), data)
+    }
+
+    @Test
+    fun `testGetNews db has no data`() = runBlockingTest{
+        coEvery {
+            dao.getArticles(any())
+        } returns emptyList()
+
+        val data = repository.getNews(1)
+        io.mockk.coVerifySequence {
+            dao.getArticles(1)
+            api.getNews(any(),any(),any(),any())
+            dao.saveArticles(*newsListFromApi.toTypedArray())
+            dao.saveLastEnteredTime(any())
+        }
+        assertEquals(Result.Success(newsListFromApi), data)
     }
 
     @Test
@@ -115,12 +156,12 @@ class NewsRepositoryImplTest {
 
 
         coEvery {
-            dao.getArticles(0)
-        } returns newsList
+            dao.getArticles(any())
+        } returns newsListFromDB
 
 
         coEvery {
-            dao.saveArticles(*newsList.toTypedArray())
+            dao.saveArticles(any())
         } returns Unit
 
         coEvery {
